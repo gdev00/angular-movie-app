@@ -12,10 +12,10 @@
                         {{movie?.title}}
                     </a>
                     <div class="meta">
-                        <div class="info">
-                            <span class="rate"><i class="material-icons">star</i><span>{{ movie?.rate?.split('/')?.[0] }}</span>/{{ movie?.rate?.split('/')?.[1] }}</span>
+                        <div class="info" *ngIf="movie?.rate?.split('/') as rate">
                             <span> {{movie.review}} Reviews</span>
                             <span>{{ movie.releaseDate  | date: 'yyyy' }}</span>
+                            <span>{{ movie.duration }}</span>
                         </div>
                     </div>
                     <div class="desc">

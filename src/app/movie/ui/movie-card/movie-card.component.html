@@ -1,10 +1,31 @@
-<div class="listing-item-style"> <!--[routerLink]="['/movies/', item.title]"-->
-    <div class="overlay">
-        <div class="hover"><i class="material-icons">play_arrow</i> PLAY NOW</div>
-    </div>
-    <img src="./assets/images/movies/{{item?.imageName}}">
-    <h6>{{ item?.title }}</h6>
-    <p class="rate"><i class="material-icons">star</i><span>{{ item?.rate?.split('/')?.[0] }}</span>/{{ item?.rate?.split('/')?.[1] }}</p>
-    <p class="year"><span>{{item?.releaseDate | date: 'yyyy'}}</span>
-    </p>
-</div>
+
+<mat-card *ngIf="item" class="!m-auto !border-2 !border-black max-w-md min-h-[396px]">
+    <mat-card-content class="!p-0 relative bg-gray-950">
+        <div class="flex justify-center">
+            <a mat-button [routerLink]="['../', item.title]" (click)="selectMovie(item)">
+                <span class="text-lg font-semibold font-dosissansserif">Play Now</span>
+            </a>
+        </div>
+        <div class="absolute m-3 rounded-md bg-gray-800 w-auto flex items-center px-3">
+            <mat-icon class="text-yellow-400">star</mat-icon>
+            <ng-container  *ngIf="item.rate?.split('/') as splitItem">
+                <span class="ml-2 text-lg">{{ splitItem?.[0] }} / </span><span class="text-base">{{ splitItem?.[1] }}</span>
+            </ng-container>
+        </div>
+        <div class="w-full h-full">
+            <img class="object-cover" src="./assets/images/movies/{{item.imageName}}">
+        </div>
+    </mat-card-content>
+    <mat-card-footer class="py-2 text-center flex justify-between items-center bg-gray-950">
+        <div class="mx-10">
+            <h2 class="text-lg font-semibold font-dosissansserif">{{ item.title }}</h2>
+        </div>
+        <button
+            (click)="requestUpdateWatchList(item)" 
+            mat-icon-button aria-label="add or remove watchlist" 
+            [pTooltip]="!item.isWatchList ? 'Add to watch list' : 'Remove from watch list'">
+            <mat-icon *ngIf="item?.isWatchList">check</mat-icon>
+            <mat-icon *ngIf="!item?.isWatchList">add</mat-icon>
+        </button>
+    </mat-card-footer>
+  </mat-card>

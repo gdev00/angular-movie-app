@@ -1,10 +1,30 @@
-<p-carousel 
-[value]="movies" 
-[numVisible]="3" 
-[numScroll]="3" 
-[circular]="false" 
-[responsiveOptions]="responsiveOptions">
-<ng-template let-movie pTemplate="item">
-   <app-movie-card [item]="movie"></app-movie-card>
-</ng-template>
-</p-carousel>
+<section class="flex flex-col gap-5 !mt-5 !mx-14">
+   <div class="flex gap-x-5 items-center">
+      <h2 class="text-5xl">Trending Movies</h2>
+      <div class="flex gap-x-3">
+         <p-dropdown [options]="options" 
+         [formControl]="formControl" 
+         optionLabel="name"
+         optionValue="value" 
+         placeholder="Select Sort By"></p-dropdown>
+      </div>
+   </div>
+   
+   <div>
+      <p-carousel
+         class="my-3"
+         [value]="movies" 
+         [numVisible]="3" 
+         [numScroll]="3" 
+         [circular]="true" 
+         [responsiveOptions]="responsiveOptions">
+         <ng-template let-movie pTemplate="item">
+            <app-movie-card 
+            [item]="movie"
+            (watchListAction)="requestUpdateWatchList($event)"
+            (selected)="selectMovie($event)"
+            ></app-movie-card>
+         </ng-template>
+      </p-carousel>
+   </div>
+</section>

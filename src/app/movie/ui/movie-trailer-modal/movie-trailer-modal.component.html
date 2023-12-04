@@ -1,0 +1,17 @@
+<div mat-dialog-title class="bg-black !p-0 !relative">
+    <button mat-icon-button (click)="close()" class="!absolute !right-0">
+        <mat-icon class="!text-white">close</mat-icon>
+    </button>
+</div>
+<mat-dialog-content class="bg-gray-600 !p-0">
+    <iframe
+    *ngIf="movieTrailerSrc as src"
+    [src]="src" 
+    width="560" 
+    height="315" 
+    frameborder="0" 
+    webkitallowfullscreen 
+    mozallowfullscreen
+    allowfullscreen>
+</iframe>
+</mat-dialog-content>

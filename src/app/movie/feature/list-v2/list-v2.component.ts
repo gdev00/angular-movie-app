@@ -10,7 +10,6 @@ import { IMovie, LocalStorageKey } from 'src/app/shared/model/movie';
 import { LocalStorageUtil } from '../../utils/local-storage.util';
 import { MovieSliderComponent } from '../../ui/movie-slider/movie-slider.component';
 import { SkeletonLoaderComponent } from 'src/app/shared/component/skeleton-loader/skeleton-loader.component';
-import { CarouselModule } from 'primeng/carousel';
 import { MovieCarouselComponent } from '../../ui/movie-carousel/movie-carousel.component';
 
 
@@ -67,11 +66,11 @@ export class ListV2Component implements OnInit {
       if(this.watchList().some(m => m.title === movie.title)) {
         this.movieStoreV2.removeToWatchList(movie);
       } else {
-        this.movieStoreV2.addToWatchList(movie);
+        this.movieStoreV2.addToWatchList({...movie, isWatchList: true});
       }
     }
 
-    requestShowDetails(movie: IMovie): void {
+    selectMovie(movie: IMovie): void {
       this.movieStoreV2.setSelectedMovie(movie);
     }
   

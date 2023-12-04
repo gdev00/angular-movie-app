@@ -1,5 +1,3 @@
-
-
 <app-skeleton-loader *ngIf="isLoading(); else content"></app-skeleton-loader>
 
 <ng-template #content>
@@ -7,7 +5,10 @@
         [movies]="movies()">
     </app-movie-slider>
     <app-movie-carousel 
-        [movies]="movies()">
+        [movies]="movies()"
+        (sortByAction)="requestSortBy($event)"
+        (watchListAction)="requestModifyWatchList($event)"
+        (selected)="selectMovie($event)">
     </app-movie-carousel>
 </ng-template>
     

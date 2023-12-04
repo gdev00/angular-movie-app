@@ -1,6 +1,7 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, Injector, Input, OnInit, effect, signal } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { IMovie } from 'src/app/shared/model/movie';
 
@@ -8,7 +9,7 @@ import { IMovie } from 'src/app/shared/model/movie';
   selector: 'app-movie-slider',
   templateUrl: './movie-slider.component.html',
   styleUrls: ['./movie-slider.component.scss'],
-  imports: [CommonModule, RouterModule, DatePipe],
+  imports: [CommonModule, RouterModule, DatePipe, MatIconModule],
   animations: [
     trigger('fade', [
       transition('void => *', [style({ opacity: 0 }), animate('300ms', style({ opacity: 1 }))]),
