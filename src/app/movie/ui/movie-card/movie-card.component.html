@@ -1,0 +1,10 @@
+<div class="listing-item-style"> <!--[routerLink]="['/movies/', item.title]"-->
+    <div class="overlay">
+        <div class="hover"><i class="material-icons">play_arrow</i> PLAY NOW</div>
+    </div>
+    <img src="./assets/images/movies/{{item?.imageName}}">
+    <h6>{{ item?.title }}</h6>
+    <p class="rate"><i class="material-icons">star</i><span>{{ item?.rate?.split('/')?.[0] }}</span>/{{ item?.rate?.split('/')?.[1] }}</p>
+    <p class="year"><span>{{item?.releaseDate | date: 'yyyy'}}</span>
+    </p>
+</div>

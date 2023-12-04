@@ -10,12 +10,14 @@ export class MovieStoreV2 {
         movies: signal<IMovie[]>([]),
         watchList: signal<Map<string, IMovie>>(new Map()),
         sortBy:signal<keyof IMovie | undefined>(undefined),
+        isLoading: signal<boolean>(true),
       } as const;
    
     readonly movieSelected = this.state.movieSelected;
     readonly movies = this.state.movies;
     readonly watchList = this.state.watchList;
     readonly sortBy = this.state.sortBy;
+    readonly isLoading = this.state.isLoading;
 
     setSelectedMovie(m: IMovie): void {
         this.state.movieSelected.set(m);
@@ -23,6 +25,10 @@ export class MovieStoreV2 {
     
     setMovies(m: IMovie[]): void {
       this.state.movies.set(m);
+    }
+
+    setLoading(l: boolean): void {
+      this.state.isLoading.set(l);
     }
 
     setWatchList(movies: IMovie[]): void {

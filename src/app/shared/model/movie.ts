@@ -23,4 +23,5 @@ export interface IMovieStateV2 {
     movies: WritableSignal<IMovie[]>,
     watchList: WritableSignal<Map<string, IMovie>>
     sortBy: WritableSignal<keyof IMovie | undefined>,
+    isLoading: WritableSignal<boolean>,
   }

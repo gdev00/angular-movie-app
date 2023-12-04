@@ -1,14 +1,17 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Injector, OnInit, computed, effect, inject } from '@angular/core';
 import { MovieDetailComponent } from '../../ui/movie-detail/movie-detail.component';
 import { MovieStoreV2 } from '../../data-access/movie-store-v2';
 import { RouterModule } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MovieApiService } from 'src/app/shared/api/movie-api.service';
-import { concatMap, of, tap } from 'rxjs';
+import { concatMap, delay, of, tap } from 'rxjs';
 import { IMovie, LocalStorageKey } from 'src/app/shared/model/movie';
 import { LocalStorageUtil } from '../../utils/local-storage.util';
 import { MovieSliderComponent } from '../../ui/movie-slider/movie-slider.component';
+import { SkeletonLoaderComponent } from 'src/app/shared/component/skeleton-loader/skeleton-loader.component';
+import { CarouselModule } from 'primeng/carousel';
+import { MovieCarouselComponent } from '../../ui/movie-carousel/movie-carousel.component';
 
 
 @Component({
@@ -16,7 +19,8 @@ import { MovieSliderComponent } from '../../ui/movie-slider/movie-slider.compone
   templateUrl: './list-v2.component.html',
   styleUrls: ['./list-v2.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule, MovieDetailComponent, MovieSliderComponent],
+  imports: [CommonModule, RouterModule, MovieDetailComponent, MovieSliderComponent,
+    SkeletonLoaderComponent, MovieCarouselComponent],
   standalone: true,
 })
 export class ListV2Component implements OnInit {
@@ -25,6 +29,7 @@ export class ListV2Component implements OnInit {
     private movieApiService: MovieApiService,
     private movieStoreV2: MovieStoreV2) {}
     destroyRef = inject(DestroyRef);
+    isLoading = computed(() => this.movieStoreV2.isLoading());
     watchList = computed(() => {
       const data = this.movieStoreV2.watchList();
       return Array.from(data.values());
@@ -46,7 +51,7 @@ export class ListV2Component implements OnInit {
 
         return propA < propB ? -1 : propA > propB ? 1 : 0;
       });
-    })
+    });
 
     ngOnInit(): void {
       this.getMovies();
@@ -83,10 +88,15 @@ export class ListV2Component implements OnInit {
     private getMovies(): void {
       // Example of using 'of(null)' to execute the api inside of concatMap, switchMap, mergeMap, exhaustMap.
       of(null).pipe(
+        tap(() => this.movieStoreV2.setLoading(true)),
+        delay(2000),
         concatMap(() => {
           return  this.movieApiService.getMovies();
         }),
-        tap((data) => this.movieStoreV2.setMovies(data)),
+        tap((data) => {
+          this.movieStoreV2.setMovies(data);
+          this.movieStoreV2.setLoading(false)
+        }),
         takeUntilDestroyed(this.destroyRef))
         .subscribe();
     }

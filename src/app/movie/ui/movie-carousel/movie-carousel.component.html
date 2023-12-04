@@ -1,0 +1,10 @@
+<p-carousel 
+[value]="movies" 
+[numVisible]="3" 
+[numScroll]="3" 
+[circular]="false" 
+[responsiveOptions]="responsiveOptions">
+<ng-template let-movie pTemplate="item">
+   <app-movie-card [item]="movie"></app-movie-card>
+</ng-template>
+</p-carousel>

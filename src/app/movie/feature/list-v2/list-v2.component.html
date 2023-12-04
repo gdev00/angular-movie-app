@@ -1,10 +1,16 @@
 
 
-<app-movie-slider
-    [movies]="movies()"
-></app-movie-slider>
+<app-skeleton-loader *ngIf="isLoading(); else content"></app-skeleton-loader>
 
-
+<ng-template #content>
+    <app-movie-slider
+        [movies]="movies()">
+    </app-movie-slider>
+    <app-movie-carousel 
+        [movies]="movies()">
+    </app-movie-carousel>
+</ng-template>
+    
 <!-- <section>
     <button (click)="requestSortBy('title')">Sort by title</button>
     <button (click)="requestSortBy('releaseDate')">Sort by release date</button>
@@ -19,3 +25,5 @@
         </li>
     </ul>
 </section> -->
+
+
