@@ -1,0 +1,18 @@
+<ng-container *ngIf="item; else noData">
+<p>{{ item | json }}</p>
+
+<iframe
+    *ngIf="movieTrailerSrc as src"
+    [src]="src" 
+    width="560" 
+    height="315" 
+    frameborder="0" 
+    webkitallowfullscreen 
+    mozallowfullscreen
+    allowfullscreen>
+</iframe>
+</ng-container>
+
+<ng-template #noData>
+    <p>No Data</p>
+</ng-template>

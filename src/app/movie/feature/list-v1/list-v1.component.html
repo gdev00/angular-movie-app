@@ -1,0 +1,22 @@
+<section>
+    <button (click)="requestSortBy('title')">Sort by title</button>
+    <button (click)="requestSortBy('releaseDate')">Sort by release date</button>
+    <p>Movie List</p>
+    <ul *ngIf="movies$ | async as movies">
+        <li *ngFor="let movie of movies">{{ movie.title }} 
+            <span *ngIf="movie.isWatchList" style="color: gray; padding-right: 2rem">On my watchlist</span>
+            <button (click)="requestModifyWatchList(movie)">Add to watchlist</button>
+            <button (click)="requestShowDetails(movie)">Show Info</button>
+        </li>
+    </ul>
+
+    <ng-container *ngIf="movieDetails$ | async as details">
+        <p>Movie info (show Modal)</p>
+        <span *ngIf="details.isWatchList" style="color: gray; padding-right: 2rem">On my watchlist</span>
+        <div style="border: 1px solid black">
+            <app-movie-detail 
+                [item]="details">
+            </app-movie-detail>
+        </div>
+    </ng-container>
+</section>

@@ -1,0 +1,10 @@
+
+
+<ng-container *ngIf="movieDetails() as details">
+    <span *ngIf="details.isWatchList" style="color: gray; padding-right: 2rem">On my watchlist</span>
+    <app-movie-detail
+        [item]="details">
+    </app-movie-detail>
+</ng-container>
+
+
