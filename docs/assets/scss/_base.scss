@@ -1,0 +1,26 @@
+@import '../scss/variables';
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html,
+
+body {
+  font-family: $base-font-family;
+  font-size: $base-font-size;
+  line-height: $base-line-height;
+  font-weight: $base-font-weight;
+  color: $base-font-color;
+  background: $base-bg;
+  margin: 0;
+}
+
+
+a {
+  text-decoration: none !important;
+  color: $anchor-font-color !important;
+}
+
