@@ -1,18 +1,19 @@
 import { DestroyRef, Injectable, inject } from '@angular/core';
 import { MovieApiService } from 'src/app/shared/api/movie-api.service';
-import { MovieState } from './movie-state';
-import { map, take, tap } from 'rxjs';
+import { MovieStoreV1 } from './movie-store-v1';
+import { delay, map, of, switchMap, take, tap } from 'rxjs';
 import { IMovie, LocalStorageKey } from 'src/app/shared/model/movie';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LocalStorageUtil } from '../utils/local-storage.util';
 
 @Injectable()
 export class MovieFacadeService {
-  constructor(private movieApiService: MovieApiService, private movieState: MovieState)  { }
+  constructor(private movieApiService: MovieApiService, private moveStoreV1: MovieStoreV1)  { }
   destroyRef = inject(DestroyRef);
-  movieSelected$ = this.movieState.movieSelected$;
-  movies$ = this.movieState.movies$;
-  watchList$ = this.movieState.watchList$;
+  movieSelected$ = this.moveStoreV1.movieSelected$;
+  movies$ = this.moveStoreV1.movies$;
+  watchList$ = this.moveStoreV1.watchList$;
+  isLoading$ = this.moveStoreV1.isLoading$;
 
   getWatchListOnLocalStorage(): IMovie[] {
     return LocalStorageUtil.getItem<IMovie[]>(LocalStorageKey.MOVIE_WATCH_LIST) || [];
@@ -23,23 +24,28 @@ export class MovieFacadeService {
   }
 
   getMovies(): void {
-    // Example of using direct api call without using switchMap etc.
-    // Alternative use an effect under ngRX.
-    this.movieApiService.getMovies().pipe(
-      tap((data) => this.movieState.setMovies(data)),
+    of(null)
+    .pipe(
+      tap(() => this.moveStoreV1.setLoading(true)),
+      delay(2000),
+      switchMap(() => this.movieApiService.getMovies()),
+      tap((data) => this.moveStoreV1.setMovies(data)),
+      tap(() => this.moveStoreV1.setLoading(false)),
       takeUntilDestroyed(this.destroyRef))
       .subscribe();
   }
 
   getMovie(title: string): void {
+     // Example of using direct api call without using switchMap etc.
+    // Alternative use an effect under ngRX.
     this.movieApiService.getMovie(title).pipe(
-      tap((data) => this.movieState.setSelectedMovie(data)),
+      tap((data) => this.moveStoreV1.setSelectedMovie(data)),
       takeUntilDestroyed(this.destroyRef))
       .subscribe();
   }
 
   getWatchList(): void {
-    this.movieState.setWatchList(this.getWatchListOnLocalStorage());
+    this.moveStoreV1.setWatchList(this.getWatchListOnLocalStorage());
   }
 
   sortMovies(by: keyof IMovie): void {
@@ -53,7 +59,7 @@ export class MovieFacadeService {
             return propA < propB ? -1 : propA > propB ? 1 : 0;
           });
       }),
-      tap((data) => this.movieState.setMovies(data)),
+      tap((data) => this.moveStoreV1.setMovies(data)),
       takeUntilDestroyed(this.destroyRef))
       .subscribe();
   }
@@ -63,9 +69,9 @@ export class MovieFacadeService {
       take(1),
       tap((movies) => {
         if(movies.some(m => m.title === movie.title)) {
-          this.movieState.removeToWatchList(movie);
+          this.moveStoreV1.removeToWatchList(movie);
         } else {
-          this.movieState.addToWatchList(movie);
+          this.moveStoreV1.addToWatchList(movie);
         }
     }),
     takeUntilDestroyed(this.destroyRef))
@@ -73,6 +79,6 @@ export class MovieFacadeService {
   }
 
   selectMovie(movie: IMovie): void {
-    this.movieState.setSelectedMovie(movie);
+    this.moveStoreV1.setSelectedMovie(movie);
   }
 }

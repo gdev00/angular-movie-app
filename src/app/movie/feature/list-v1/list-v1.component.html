@@ -1,4 +1,19 @@
-<section>
+<app-skeleton-loader *ngIf="isLoading$ | async; else content"></app-skeleton-loader>
+
+<ng-template #content>
+    <ng-container  *ngIf="movies$ | async as movies">
+        <app-movie-slider
+        [movies]="movies">
+    </app-movie-slider>
+    <app-movie-carousel 
+        [movies]="movies"
+        (sortByAction)="requestSortBy($event)"
+        (watchListAction)="requestModifyWatchList($event)"
+        (selected)="selectMovie($event)">
+    </app-movie-carousel>
+    </ng-container>
+</ng-template>
+<!-- <section>
     <button (click)="requestSortBy('title')">Sort by title</button>
     <button (click)="requestSortBy('releaseDate')">Sort by release date</button>
     <p>Movie List</p>
@@ -19,4 +34,4 @@
             </app-movie-detail>
         </div>
     </ng-container>
-</section>
+</section> -->

@@ -1,0 +1,83 @@
+<div mat-dialog-title class="bg-black !p-0 !relative">
+    <button mat-icon-button (click)="close()" class="!absolute !right-0">
+        <mat-icon class="!text-white">close</mat-icon>
+    </button>
+</div>
+<mat-dialog-content class="bg-gray-600 !p-0">
+    <ng-container *ngIf="data?.movie as item; else noData">
+        <section class="text-gray-600 body-font flex bg-gray-950 relative">
+            <div class="container mx-auto flex px-2 py-5 items-center justify-center flex-col">
+              <div class="lg:w-2/3 w-full animate-fade-in-down">
+                <div class="flex">
+                    <h1 class="name">
+                        {{item.title}}
+                      </h1>
+                    <button
+                    class="!text-white"
+                    (click)="requestUpdateWatchList(item)" 
+                    mat-icon-button aria-label="add or remove watchlist" 
+                    [pTooltip]="!item.isWatchList ? 'Add to watch list' : 'Remove from watch list'">
+                    <mat-icon *ngIf="item?.isWatchList">check</mat-icon>
+                    <mat-icon *ngIf="!item?.isWatchList">add</mat-icon>
+                 </button>
+                </div>
+               
+                <p class="mt-5 mb-5 md:leading-relaxed leading-normal text-white tracking-tight text-xl">
+                  {{ item.description }}
+                </p>
+                
+                <div class="mb-5 flex flex-col gap-2">
+                  <div class="flex gap-x-4">
+                    <p class="text-base text-zinc-400 font-semibold leading-8">Rating:</p>
+                    <div class="text-lg text-white flex">
+                      <mat-icon class="text-yellow-400 text-3xl">star</mat-icon>
+                      <p  *ngIf="item.rate?.split('/') as splitItem">
+                        <span class="ml-2 text-lg">{{ splitItem?.[0] }} / </span><span class="text-base">{{ splitItem?.[1] }}</span>
+                      </p>
+                   
+                    </div>
+                  </div>
+                  <div class="flex gap-x-4">
+                    <p class="text-base text-zinc-400 font-semibold leading-8">Duration:</p>
+                    <p class="text-lg text-white ">{{ item.duration }}</p>
+                  </div>
+                  <div class="flex gap-x-4">
+                    <p class="text-base text-zinc-400 font-semibold leading-8">Genre:</p>
+                    <p class="text-lg text-white ">{{ item.genre }}</p>
+                  </div>
+                  <div class="flex gap-x-4">
+                    <p class="text-base text-zinc-400 font-semibold leading-8">Release Date:</p>
+                    <p class="text-lg text-white ">{{ item.releaseDate }}</p>
+                  </div>
+                  <div class="flex gap-x-4">
+                    <p class="text-base text-zinc-400 font-semibold leading-8">Review:</p>
+                    <p class="text-lg text-white ">{{ item.review }}</p>
+                  </div>
+                </div>
+                <div class="flex gap-x-4 items-center content-center">
+  
+                </div>
+              </div>
+            </div>
+            <div class="container mx-auto flex px-2 py-5 items-center justify-center flex-col">
+                <div class="lg:w-2/3 w-full animate-fade-in-down">
+                    <iframe
+                    *ngIf="movieTrailerSrc as src"
+                    [src]="src" 
+                    width="560" 
+                    height="315" 
+                    frameborder="0" 
+                    webkitallowfullscreen 
+                    mozallowfullscreen
+                    allowfullscreen>
+                </iframe>
+                </div>
+            </div>
+          </section>
+    </ng-container>
+    
+    <ng-template #noData>
+        <p>No Data</p>
+    </ng-template>
+</mat-dialog-content>
+

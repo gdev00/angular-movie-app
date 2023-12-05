@@ -4,6 +4,7 @@
     </button>
 </div>
 <mat-dialog-content class="bg-gray-600 !p-0">
+    {{data | json }}
     <iframe
     *ngIf="movieTrailerSrc as src"
     [src]="src" 
