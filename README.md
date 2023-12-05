@@ -1,6 +1,7 @@
 # AngularMovieApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.10.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.10. 
+I created a two version of movie application. Using Rxjs and Signals.
 
 ## Angular Movie App
 * Angular
