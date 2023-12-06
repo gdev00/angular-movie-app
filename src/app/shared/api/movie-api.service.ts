@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { IMovie } from '../model/movie';
 import { Observable, map } from 'rxjs';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieApiService {
 
-  readonly API = 'http://localhost:3000';
+  readonly API = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
